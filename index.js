@@ -24,6 +24,7 @@ async function run() {
 
         const database = client.db('foodShop');
         const productCollection = database.collection('products');
+        const ordersCollection = database.collection('orders');
 
         app.get('/products', async (req, res) => {
             console.log('hitting database');
@@ -42,6 +43,15 @@ async function run() {
             res.json(cursor)
         })
 
+        app.post('/order', async (req, res) => {
+            const data = req.body;
+            console.log('post', data);
+            const result = await ordersCollection.insertOne(data);
+            res.json(result);
+            console.log('result', data);
+
+        })
+
 
     } finally {
         // Ensures that the client will close when you finish/error
@@ -53,7 +63,7 @@ run().catch(console.dir);
 //default 
 app.get('/', (req, res) => {
     console.log('hi');
-    res.send('server running');
+    res.send('hot onion server running');
 
 })
 
